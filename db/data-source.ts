@@ -8,6 +8,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: 'root',
   database: 'car-booking',
   entities: [],
+  migrations: ['dist/db/migrations/*.js'],
   synchronize: true,
 };
 

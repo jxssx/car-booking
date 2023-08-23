@@ -1,19 +1,20 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'bookings', schema: 'public', synchronize: true })
+@Entity({ name: 'bookings', schema: 'public' })
 export class Booking {
   @PrimaryGeneratedColumn()
   id: number;
 
+  // Не создаем связь, т.к. для нас cars - отдельный сервис
   @Column()
   carId: number;
 
   @Column()
-  start_date: Date;
+  startDate: Date;
 
   @Column()
-  end_date: Date;
+  endDate: Date;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  rental_cost: number;
+  rentalCost: number;
 }

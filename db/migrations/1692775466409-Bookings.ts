@@ -7,8 +7,8 @@ export class Bookings1692775466409 implements MigrationInterface {
         CREATE TABLE bookings (
         id SERIAL PRIMARY KEY,
         car_id INTEGER,
-        start_date TIMESTAMP,
-        end_date TIMESTAMP,
+        start_date TIMESTAMP with time zone,
+        end_date TIMESTAMP with time zone,
         rental_cost DECIMAL(10, 2)
         );
     `);

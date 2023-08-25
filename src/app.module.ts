@@ -4,8 +4,8 @@ import { dataSourceOptions } from 'db/data-source';
 import { BookingsModule } from './bookings/bookings.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSourceOptions), BookingsModule],
-  controllers: [],
-  providers: [],
+    imports: [TypeOrmModule.forRoot(dataSourceOptions), BookingsModule],
+    controllers: [],
+    providers: [],
 })
 export class AppModule {}

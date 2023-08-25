@@ -1,32 +1,32 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Booking } from 'src/entities/booking.entity';
 import { BookingsService, ReportResult } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { GetRentalCostDto } from './dto/get-rental-cost.dto';
-import { IsBookingAvailableDto } from './dto/is-booking-available.dto';
 import { GetReportDto } from './dto/get-report.dto';
-import { Booking } from 'src/entities/booking.entity';
+import { IsBookingAvailableDto } from './dto/is-booking-available.dto';
 
 @Controller('bookings')
 export class BookingsController {
-  constructor(private bookingsService: BookingsService) {}
+    constructor(private bookingsService: BookingsService) {}
 
-  @Post()
-  createBooking(@Body() dto: CreateBookingDto): Promise<Booking> {
-    return this.bookingsService.createBooking(dto);
-  }
+    @Post()
+    createBooking(@Body() dto: CreateBookingDto): Promise<Booking> {
+        return this.bookingsService.createBooking(dto);
+    }
 
-  @Get('available')
-  isBookingAvailable(@Body() dto: IsBookingAvailableDto): Promise<boolean> {
-    return this.bookingsService.isBookingAvailable(dto);
-  }
+    @Get('available')
+    isBookingAvailable(@Body() dto: IsBookingAvailableDto): Promise<boolean> {
+        return this.bookingsService.isBookingAvailable(dto);
+    }
 
-  @Get('cost')
-  getRentalCost(@Body() dto: GetRentalCostDto): Promise<number> {
-    return this.bookingsService.getRentalCost(dto);
-  }
+    @Get('cost')
+    getRentalCost(@Body() dto: GetRentalCostDto): Promise<number> {
+        return this.bookingsService.getRentalCost(dto);
+    }
 
-  @Get('report')
-  getReport(@Body() dto: GetReportDto): Promise<ReportResult> {
-    return this.bookingsService.getReport(dto);
-  }
+    @Get('report')
+    getReport(@Body() dto: GetReportDto): Promise<ReportResult> {
+        return this.bookingsService.getReport(dto);
+    }
 }

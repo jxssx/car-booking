@@ -1,73 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Тестовое задание: Расчет стоимости аренды автомобилей
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Данное тестовое задание представляет собой сервис для бронирования автомобилей, подсчета стоимости аренды и формирования отчетов о загрузке автомобилей.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Исходные данные
 
-## Description
+- Базовый тариф: 1000 ₽ в день
+- Тарифы:
+  - 1-4 день: базовый
+  - 5-9 день: базовый - 5%
+  - 10-17 день: базовый - 10%
+  - 18-29 день: базовый - 15%
+- Максимальный срок аренды: 30 дней
+- Между бронированиями одной и той же мащины должен быть интервал 3 дня
+- Парк автомобилей: 5 автомобилей
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Запуск проекта
 
-## Installation
+1. Склонируйте репозиторий:
 
-```bash
-$ npm install
+   ```sh
+   git clone https://github.com/jxssx/car-booking.git
+   cd car-booking
+Файл .env не добавлял в .gitignore для вашего удобства
+
+Запустите проект с помощью Docker Compose:
+
+  ```sh
+  docker-compose up --build
 ```
+Приложение будет доступно по адресу http://localhost:3000
 
-## Running the app
+Описание методов
+Проверка доступности автомобиля
+Метод: GET
+Путь: /bookings/available
+Тело запроса (пример): { "carId", "startDate": "2023-08-01", "endDate": "2023-08-15" }
+Возвращает: true если автомобиль доступен в данный временной интервал, false если нет. Обрабатывает ситуации, когда машины нет, интервал неверный, его начало или конец выпадают на выходной или в это время машина уже забронирована (+-3 дня).
 
-```bash
-# development
-$ npm run start
+Расчет стоимости аренды
+Метод: POST
+Путь: /bookings/cost
+Тело запроса (пример): { "startDate": "2023-08-01", "endDate": "2023-08-15" }
+Возвращает: стоимость аренды в рублях
 
-# watch mode
-$ npm run start:dev
+Создание сессии аренды
+Метод: POST
+Путь: /bookings
+Тело запроса (пример): { "carId": 1, "startDate": "2023-08-01", "endDate": "2023-08-15" }
+Возвращает: информацию о созданной сессии аренды
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Формирование отчета о загрузке автомобилей за месяц
+Метод: GET
+Путь: /bookings/report
+Тело запроса (пример): { "year": 2023, "monthNumber": 8 } (месяц указываем как в жизни, т.е. январь - месяц с номером 1)
+Возвращает: отчет о загрузке автомобилей в формате JSON.
